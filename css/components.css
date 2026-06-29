@@ -1,1 +1,142 @@
-/* Coming soon! */
+/* ====================================================================
+   Everfrost Components Theme - Copyright © 2026. All rights reserved.
+   ==================================================================== */
+
+/* Navigation */
+
+nav{
+
+    position:sticky;
+    top:0;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 40px;
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(15,39,71,.55);
+
+    border-bottom:
+    1px solid rgba(255,255,255,.08);
+
+    z-index:100;
+
+}
+
+.logo{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-family:"Fredoka";
+
+    font-size:1.5rem;
+    font-weight:600;
+
+}
+
+.nav-links{
+
+    display:flex;
+    gap:28px;
+
+}
+
+.nav-links a{
+
+    transition:var(--transition);
+
+}
+
+.nav-links a:hover{
+
+    color:var(--primary-light);
+
+}
+
+/* Buttons */
+
+.btn{
+
+    border:none;
+
+    border-radius:var(--radius-md);
+
+    padding:12px 22px;
+
+    transition:var(--transition);
+
+}
+
+.btn-primary{
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-light));
+
+    color:white;
+
+}
+
+.btn-primary:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 0 20px rgba(95,168,255,.45);
+
+}
+
+.btn-secondary{
+
+    background:
+    rgba(255,255,255,.08);
+
+    backdrop-filter:blur(10px);
+
+    color:white;
+
+    border:
+    1px solid rgba(255,255,255,.15);
+
+}
+
+.btn-secondary:hover{
+
+    background:
+    rgba(255,255,255,.14);
+
+}
+
+/* Cards */
+
+.card{
+
+    background:rgba(255,255,255,.06);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:var(--radius-lg);
+
+    overflow:hidden;
+
+    transition:var(--transition);
+
+}
+
+.card:hover{
+
+    transform:
+    translateY(-6px);
+
+    box-shadow:
+    var(--shadow);
+
+}
