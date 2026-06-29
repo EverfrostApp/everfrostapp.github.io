@@ -1,1 +1,108 @@
-/* Coming soon! */
+/* =========================================================
+   Everfrost Styles - Copyright © 2026. All rights reserved.
+   ========================================================= */
+
+/* Main */
+
+main{
+
+    width:min(1400px,92%);
+    margin:auto;
+
+    padding:40px 0;
+
+}
+
+/* Sections */
+
+section{
+
+    margin-bottom:70px;
+
+}
+
+section h2{
+
+    margin-bottom:20px;
+
+    font-size:1.8rem;
+
+}
+
+/* Game Grid */
+
+.games{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+    gap:24px;
+
+}
+
+/* Placeholder */
+
+.placeholder{
+
+    height:260px;
+
+    border-radius:var(--radius-lg);
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(255,255,255,.08),
+        rgba(255,255,255,.04));
+
+}
+
+/* Footer */
+
+footer{
+
+    padding:60px 0;
+
+    text-align:center;
+
+    color:var(--snow);
+
+    background:
+    rgba(0,0,0,.15);
+
+    backdrop-filter:blur(12px);
+
+}
+
+footer h2{
+
+    margin-bottom:10px;
+
+}
+
+footer p{
+
+    opacity:.85;
+
+}
+
+/* Mobile */
+
+@media(max-width:900px){
+
+    nav{
+
+        flex-direction:column;
+        gap:18px;
+
+    }
+
+    .nav-links{
+
+        flex-wrap:wrap;
+        justify-content:center;
+
+    }
+
+}
