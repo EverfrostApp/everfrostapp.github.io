@@ -1,1 +1,84 @@
-/* Coming soon! */
+/* =========================================================
+   Everfrost Theme - Copyright © 2026. All rights reserved.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&family=Fredoka:wght@300..700&display=swap');
+
+:root {
+
+    /* Colors */
+
+    --primary: #5FA8FF;
+    --primary-light: #7FC8FF;
+
+    --background: #0F2747;
+    --surface: #16385F;
+    --surface-light: #214E81;
+
+    --snow: #F4F8FC;
+    --text: #EAF6FF;
+
+    --success: #7FE5B5;
+    --warning: #FFD96A;
+    --danger: #FF7272;
+
+    /* Radius */
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+
+    /* Shadows */
+
+    --shadow:
+        0 10px 30px rgba(0,0,0,.25);
+
+    /* Animation */
+
+    --transition: .25s ease;
+
+}
+
+/* Reset */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:
+    linear-gradient(
+        180deg,
+        #16385F,
+        #0F2747);
+
+    color:var(--text);
+
+    font-family:"Baloo 2",sans-serif;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+h1,h2,h3,h4{
+    font-family:"Fredoka",sans-serif;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+    cursor:pointer;
+}
