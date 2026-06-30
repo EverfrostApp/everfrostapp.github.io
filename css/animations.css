@@ -80,3 +80,27 @@
     }
 
 }
+
+.search-box{
+    transition:.25s;
+}
+
+.modal{
+    animation:fade .25s ease;
+}
+
+.card img{
+    transition:.3s;
+}
+
+.card:hover img{
+    transform:scale(1.04);
+}
+
+.play-btn{
+    transition:.25s;
+}
+
+.play-btn:hover{
+    transform:translateY(-2px);
+}
