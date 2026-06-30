@@ -106,3 +106,20 @@ footer p{
     }
 
 }
+
+.games{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px;
+}
+
+section{
+    margin-bottom:72px;
+}
+
+section h2{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:20px;
+}
