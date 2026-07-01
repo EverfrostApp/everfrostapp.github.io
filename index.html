@@ -1,12 +1,1697 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Everfrost</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Everfrost: Where Creativity Never Melts</title>
+    
+    <link rel="icon" href="https://everfrostapp.github.io/assets/logos/favicon.ico">
+    <link rel="icon" type="image/png" href="/assets/logos/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/assets/logos/favicon.svg" />
+    <link rel="shortcut icon" href="/assets/logos/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/logos/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Everfrost" />
+    <link rel="manifest" href="/assets/logos/site.webmanifest" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Fredoka:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* ========================================================================== 
+           EVERFROST CORE THEME & RESET 
+           ========================================================================== */ 
+        :root { 
+            /* Colors */ 
+            --primary: #5FA8FF; 
+            --primary-light: #7FC8FF; 
+            --background: #0F2747; 
+            --surface: #16385F; 
+            --surface-light: #214E81; 
+            --snow: #F4F8FC; 
+            --text: #EAF6FF; 
+            --success: #7FE5B5; 
+            --warning: #FFD96A; 
+            --danger: #FF7272; 
+            
+            /* NEW UPGRADE: Palette Depth Variables */
+            --cyan-accent: #A3E5FF;
+            --purple-glow: rgba(124, 92, 255, 0.25);
+            
+            /* Radius */ 
+            --radius-sm: 10px; 
+            --radius-md: 16px; 
+            --radius-lg: 24px; 
+            /* Transitions */ 
+            --transition-smooth: cubic-bezier(0.25, 0.8, 0.25, 1); 
+        } 
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        } 
+        body.ef-body { 
+            background-color: var(--background); 
+            color: var(--text); 
+            font-family: 'Fredoka', sans-serif; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-x: hidden; 
+        } 
+        h1, h2, h3, h4, .ef-logo-text, .ef-btn { 
+            font-family: 'Baloo 2', sans-serif; 
+            font-weight: 700; 
+        } 
+        a { 
+            color: inherit; 
+            text-decoration: none; 
+        } 
+
+        /* Background Canvas Layer for Snow */
+        #snow-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* ========================================================================== 
+           LAYOUT CONTAINERS & SIDEBAR SPACE
+           ========================================================================== */ 
+        .ef-nav-container, .ef-content-container, .ef-footer-container { 
+            width: 100%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 24px; 
+            position: relative;
+            z-index: 2;
+        } 
+        .ef-main-content { 
+            flex: 1; 
+            padding: 40px 0; 
+            margin-left: 240px; 
+            transition: margin-left 0.3s var(--transition-smooth);
+            position: relative;
+            z-index: 2;
+        } 
+        
+        /* ROBLOX-STYLE HORIZONTAL CAROUSEL TRACKS */
+        .ef-carousel-container {
+            position: relative;
+            width: 100%;
+        }
+        .ef-carousel-track {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 12px 4px 24px 4px;
+            scrollbar-width: none; /* Firefox */
+        }
+        .ef-carousel-track::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
+        /* Grid Layouts for Creators remaining static */ 
+        .ef-grid { 
+            display: grid; 
+            gap: 24px; 
+        } 
+        .ef-grid-creators { 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+        } 
+        
+        /* ========================================================================== 
+           COMPONENTS: HEADER & INTERACTIVE SEARCH DROPDOWN
+           ========================================================================== */ 
+        .ef-header { 
+            background-color: var(--surface); 
+            padding: 12px 0; 
+            border-bottom: 3px solid var(--surface-light); 
+            box-shadow: 0 4px 20px var(--purple-glow); 
+            position: sticky; 
+            top: 0; 
+            z-index: 110; 
+        } 
+        .ef-nav-container { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            gap: 24px; 
+        } 
+        .ef-menu-toggle {
+            background: none;
+            border: none;
+            color: var(--snow);
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ef-menu-toggle:hover {
+            background-color: var(--surface-light);
+        }
+        .ef-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .ef-logo { 
+            display: flex; 
+            align-items: center; 
+            color: var(--snow); 
+        } 
+        .ef-logo-img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
+        }
+        .ef-nav {
+            display: flex;
+            align-items: center;
+        }
+        .ef-nav-list { 
+            display: flex; 
+            list-style: none; 
+            gap: 4px; 
+        } 
+        .ef-nav-link { 
+            font-size: 1rem; 
+            padding: 8px 14px; 
+            border-radius: var(--radius-sm); 
+            transition: all 0.2s var(--transition-smooth); 
+            font-weight: 500; 
+            white-space: nowrap;
+        } 
+        .ef-nav-link:hover, .ef-nav-link.ef-active { 
+            background-color: var(--surface-light); 
+            color: var(--cyan-accent); 
+        } 
+        
+        /* Search Container System */ 
+        .ef-search-container { 
+            flex: 1; 
+            max-width: 400px; 
+            position: relative;
+        } 
+        .ef-search-input-wrapper { 
+            position: relative; 
+            width: 100%; 
+        } 
+        .ef-search-icon { 
+            position: absolute; 
+            left: 18px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            color: var(--primary-light); 
+            opacity: 0.7; 
+            font-size: 0.95rem; 
+            z-index: 5;
+        } 
+        .ef-search-input { 
+            width: 100%; 
+            background-color: var(--background); 
+            border: 2px solid var(--surface-light); 
+            border-radius: var(--radius-lg); 
+            padding: 10px 20px 10px 44px; 
+            color: var(--snow); 
+            font-family: inherit; 
+            font-size: 0.95rem; 
+            transition: all 0.2s var(--transition-smooth); 
+            position: relative;
+        } 
+        .ef-search-input:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            box-shadow: 0 0 12px rgba(95, 168, 255, 0.2); 
+        } 
+        
+        .ef-search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 8px;
+            background-color: var(--surface);
+            border: 2px solid var(--surface-light);
+            border-radius: var(--radius-md);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 200;
+        }
+        .ef-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 18px;
+            font-size: 0.95rem;
+            color: var(--text);
+            transition: background-color 0.15s;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(33, 78, 129, 0.4);
+        }
+        .ef-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        .ef-dropdown-item:hover {
+            background-color: var(--surface-light);
+        }
+        .ef-dropdown-item i {
+            color: var(--primary-light);
+            width: 18px;
+            text-align: center;
+            opacity: 0.8;
+        }
+        .ef-dropdown-query {
+            font-weight: 700;
+            color: var(--snow);
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .ef-dropdown-target {
+            opacity: 0.6;
+            margin-left: auto;
+            font-size: 0.85rem;
+            background-color: var(--background);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .ef-auth-actions { 
+            display: flex; 
+            gap: 12px; 
+            flex-shrink: 0;
+            align-items: center;
+        } 
+
+        /* ========================================================================== 
+           LEFT NAVIGATION SIDEBAR (SIDENAV)
+           ========================================================================== */
+        .ef-sidebar {
+            position: fixed;
+            top: 67px; 
+            left: 0;
+            bottom: 0;
+            width: 240px;
+            background-color: var(--surface);
+            border-right: 3px solid var(--surface-light);
+            box-shadow: 4px 0 20px var(--purple-glow); 
+            z-index: 90;
+            padding: 20px 0;
+            overflow-y: auto;
+            transition: transform 0.3s var(--transition-smooth);
+        }
+        .ef-sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0 12px;
+        }
+        .ef-sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+        .ef-sidebar-link i {
+            font-size: 1.15rem;
+            width: 24px;
+            text-align: center;
+            color: var(--primary-light);
+        }
+        .ef-sidebar-link:hover, .ef-sidebar-link.ef-active {
+            background-color: var(--surface-light);
+            color: var(--snow);
+        }
+        .ef-sidebar-divider {
+            border: 0;
+            height: 2px;
+            background-color: var(--surface-light);
+            margin: 12px 12px;
+        }
+
+        
+        /* ========================================================================== 
+           COMPONENTS: BUTTONS & ANIMATED SHIMMER
+           ========================================================================== */ 
+        .ef-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+            padding: 10px 20px; 
+            font-size: 1rem; 
+            border-radius: var(--radius-md); 
+            border: none; 
+            cursor: pointer; 
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s var(--transition-smooth); 
+        } 
+        .ef-btn-full { 
+            width: 100%; 
+        } 
+
+        @keyframes ice-shimmer {
+            0% { transform: translateX(-150%) skewX(-25deg); }
+            100% { transform: translateX(150%) skewX(-25deg); }
+        }
+        .ef-btn-primary::after, .ef-btn-play::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: ice-shimmer 3s infinite linear;
+            pointer-events: none;
+        }
+
+        .ef-btn-primary { 
+            background-color: var(--primary); 
+            color: var(--background); 
+            box-shadow: 0 4px 0px #3D7ACC; 
+        } 
+        .ef-btn-primary:hover { 
+            background-color: var(--primary-light); 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 0px #3D7ACC; 
+        } 
+        .ef-btn-primary:active { 
+            transform: translateY(2px); 
+            box-shadow: 0 0px 0px #3D7ACC; 
+        } 
+        .ef-btn-secondary { 
+            background-color: var(--surface-light); 
+            color: var(--snow); 
+            box-shadow: 0 4px 0px #112B47; 
+        } 
+        .ef-btn-secondary:hover { 
+            background-color: #2D65A3; 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 0px #112B47; 
+        } 
+        .ef-btn-secondary:active { 
+            transform: translateY(2px); 
+            box-shadow: 0 0px 0px #112B47; 
+        } 
+        .ef-btn-play { 
+            background-color: var(--success); 
+            color: var(--background); 
+            box-shadow: 0 4px 0px #4DB284; 
+        } 
+        .ef-btn-play:hover { 
+            background-color: #9AECD2; 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 0px #4DB284; 
+        } 
+        .ef-btn-play:active { 
+            transform: translateY(2px); 
+            box-shadow: 0 0px 0px #4DB284; 
+        } 
+
+        /* Settings Toggle Specific Button */
+        .ef-btn-settings {
+            background: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            box-shadow: none;
+        }
+        .ef-btn-settings:hover {
+            background-color: var(--surface-light);
+            color: var(--cyan-accent);
+        }
+        
+        /* ========================================================================== 
+           HERO GREETING SECTION 
+           ========================================================================== */
+        .ef-hero-greeting {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--background) 100%);
+            border: 3px solid var(--surface-light);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            margin-bottom: 48px;
+            position: relative;
+            box-shadow: 0 10px 30px var(--purple-glow);
+            overflow: hidden;
+        }
+        .ef-hero-greeting::before {
+            content: '\f2dc';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -40px;
+            font-size: 14rem;
+            color: var(--surface-light);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .ef-hero-title {
+            font-size: 2.8rem;
+            color: var(--snow);
+            line-height: 1.2;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .ef-hero-title span {
+            color: var(--primary-light);
+        }
+        .ef-hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 600px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* ========================================================================== 
+           HOMEPAGE CONTENT SECTIONS 
+           ========================================================================== */ 
+        .ef-section { 
+            margin-bottom: 40px; 
+        } 
+        .ef-section.ef-hidden-section {
+            display: none; /* Used to hide recommendation section if not logged in */
+        }
+        .ef-section-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: flex-end; 
+            margin-bottom: 16px; 
+        } 
+        .ef-section-title { 
+            font-size: 1.6rem; 
+            color: var(--snow); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        } 
+        .ef-title-icon { 
+            color: var(--warning); 
+        } 
+        .ef-title-icon.ef-icon-blue { color: var(--primary-light); }
+        .ef-title-icon.ef-icon-green { color: var(--success); }
+        .ef-title-icon.ef-icon-purple { color: #A084FF; }
+        .ef-title-icon.ef-icon-orange { color: #FF9F43; }
+
+        .ef-view-all { 
+            color: var(--primary-light); 
+            font-weight: 600; 
+            font-size: 1rem; 
+            padding: 6px 14px; 
+            border-radius: var(--radius-sm); 
+            background-color: var(--surface); 
+            transition: background-color 0.2s; 
+        } 
+        .ef-view-all:hover { 
+            background-color: var(--surface-light); 
+        } 
+        
+        /* ========================================================================== 
+           ROBLOX-STYLE CARD SYSTEM WITH HOVER HOOK OVERLAYS
+           ========================================================================== */ 
+        .ef-card { 
+            background-color: var(--surface); 
+            border-radius: var(--radius-md); 
+            border: 3px solid var(--surface-light); 
+            overflow: hidden; 
+            transition: transform 0.25s var(--transition-smooth), box-shadow 0.25s var(--transition-smooth), border-color 0.25s; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 190px;
+            width: 190px;
+            flex-shrink: 0;
+        } 
+        .ef-card:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 20px var(--purple-glow); 
+            border-color: var(--cyan-accent); 
+        } 
+        .ef-card-thumbnail-wrapper { 
+            position: relative; 
+            width: 100%; 
+            padding-top: 56.25%; 
+            background-color: var(--background); 
+            overflow: hidden;
+        } 
+        .ef-card-img { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            transition: transform 0.3s;
+        } 
+        .ef-card:hover .ef-card-img {
+            transform: scale(1.05);
+        }
+
+        /* NEW HOVER SYSTEM LAYER */
+        .ef-hover-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 39, 71, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+        .ef-card:hover .ef-hover-play-overlay {
+            opacity: 1;
+        }
+        .ef-hover-play-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--success);
+            color: var(--background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(127, 229, 181, 0.4);
+            transform: scale(0.8);
+            transition: transform 0.2s var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+        }
+        .ef-card:hover .ef-hover-play-btn {
+            transform: scale(1);
+        }
+
+        .ef-card-body { 
+            padding: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1; 
+        } 
+        .ef-card-title { 
+            font-size: 1.05rem; 
+            color: var(--snow); 
+            margin-bottom: 2px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        } 
+        .ef-card-developer { 
+            font-size: 0.85rem; 
+            color: var(--text); 
+            opacity: 0.6; 
+            margin-bottom: 8px; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        } 
+        
+        /* ROBLOX PLATFORM METRICS SUB-ROW */
+        .ef-card-metrics {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.8rem;
+            margin-top: auto;
+            border-top: 1px solid rgba(234, 246, 255, 0.1);
+            padding-top: 6px;
+        }
+        .ef-metric-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ef-metric-item.ef-rating {
+            color: var(--warning);
+        }
+        .ef-metric-item.ef-active-players {
+            color: var(--primary-light);
+        }
+
+        .ef-verified-badge { 
+            color: var(--primary-light); 
+            font-size: 0.8rem; 
+            margin-left: 2px;
+        } 
+        .ef-creator-card { 
+            padding-top: 24px; 
+        } 
+        .ef-creator-avatar-wrapper { 
+            width: 100px; 
+            height: 100px; 
+            margin: 0 auto; 
+            border-radius: 50%; 
+            border: 4px solid var(--surface-light); 
+            overflow: hidden; 
+            background-color: var(--background); 
+        } 
+        .ef-creator-avatar-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+        } 
+        .ef-text-center { 
+            text-align: center; 
+            align-items: center; 
+        } 
+        .ef-creator-stats { 
+            font-size: 0.95rem; 
+            color: var(--primary-light); 
+            margin-top: 4px; 
+        } 
+
+        /* Settings Toggle Visual Switch Layout styling inside modal */
+        .ef-settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--background);
+            padding: 16px;
+            border-radius: var(--radius-md);
+            margin-top: 16px;
+            border: 2px solid var(--surface-light);
+            width: 100%;
+        }
+        .ef-switch-label {
+            font-weight: 500;
+            color: var(--snow);
+        }
+        .ef-preview-notice {
+            font-size: 0.85rem;
+            color: var(--warning);
+            margin-top: 12px;
+            opacity: 0.95;
+            background: rgba(255, 217, 106, 0.1);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            line-height: 1.4;
+        }
+        
+        /* ========================================================================== 
+           FOOTER SECTION 
+           ========================================================================== */ 
+        .ef-footer { 
+            background-color: var(--surface); 
+            padding: 48px 0 32px 0; 
+            border-top: 3px solid var(--surface-light); 
+            margin-top: auto; 
+            margin-left: 240px; 
+            transition: margin-left 0.3s var(--transition-smooth);
+            position: relative;
+            z-index: 2;
+        } 
+        .ef-footer-preview-alert { 
+            background-color: var(--surface-light); 
+            border-radius: var(--radius-lg); 
+            padding: 32px; 
+            text-align: center; 
+            max-width: 800px; 
+            margin: 0 auto 40px auto; 
+        } 
+        .ef-footer-preview-text { 
+            font-family: 'Baloo 2', sans-serif; 
+            font-size: 1.6rem; 
+            color: var(--warning); 
+            margin-bottom: 8px; 
+        } 
+        .ef-footer-cta-text { 
+            font-size: 1.1rem; 
+            opacity: 0.9; 
+            margin-bottom: 16px; 
+        } 
+        .ef-footer-features-list { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 24px; 
+            list-style: none; 
+            margin-bottom: 28px; 
+        } 
+        .ef-footer-features-list li { 
+            font-size: 1.05rem; 
+            background-color: var(--surface); 
+            padding: 8px 16px; 
+            border-radius: var(--radius-sm); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        } 
+        .ef-feature-icon { 
+            color: var(--primary-light); 
+        } 
+        .ef-footer-actions { 
+            display: flex; 
+            justify-content: center; 
+            gap: 16px; 
+            align-items: center;
+            flex-wrap: wrap;
+        } 
+        
+        .ef-footer-legal-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px 24px;
+            margin-bottom: 24px;
+            list-style: none;
+        }
+        .ef-footer-legal-link {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .ef-footer-legal-link:hover {
+            opacity: 1;
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+        .ef-footer-corporate-info {
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.5;
+            line-height: 1.6;
+            max-width: 750px;
+            margin: 0 auto 24px auto;
+        }
+        .ef-footer-divider { 
+            border: 0; 
+            height: 2px; 
+            background-color: var(--surface-light); 
+            margin-bottom: 32px; 
+        } 
+        
+        .ef-footer-bottom { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 24px; 
+        } 
+        .ef-footer-platforms { 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            flex-wrap: wrap;
+        } 
+        .ef-platform-label { 
+            opacity: 0.6; 
+            font-size: 0.95rem; 
+        } 
+        .ef-platform-list { 
+            display: flex; 
+            list-style: none; 
+            gap: 12px; 
+            flex-wrap: wrap;
+        } 
+        .ef-platform-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            background-color: var(--background); 
+            padding: 6px 12px; 
+            border-radius: var(--radius-sm); 
+            font-size: 0.9rem; 
+            white-space: nowrap;
+        } 
+        .ef-footer-slogan { 
+            font-family: 'Baloo 2', sans-serif; 
+            font-size: 1.3rem; 
+            color: var(--primary-light); 
+            white-space: nowrap;
+        } 
+        
+        /* ========================================================================== 
+           MODAL DIALOG 
+           ========================================================================== */ 
+        .ef-modal-backdrop { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(15, 39, 71, 0.85); 
+            backdrop-filter: blur(4px); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 0.3s var(--transition-smooth); 
+        } 
+        .ef-modal-backdrop.ef-modal-active { 
+            opacity: 1; 
+            pointer-events: auto; 
+        } 
+        .ef-modal { 
+            background-color: var(--surface); 
+            border: 3px solid var(--primary-light); 
+            border-radius: var(--radius-lg); 
+            width: 100%; 
+            max-width: 450px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5); 
+            transform: scale(0.9); 
+            transition: transform 0.3s var(--transition-smooth); 
+            margin: 0 16px;
+        } 
+        .ef-modal-backdrop.ef-modal-active .ef-modal { 
+            transform: scale(1); 
+        } 
+        .ef-modal-header { 
+            padding: 20px 24px; 
+            border-bottom: 2px solid var(--surface-light); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        } 
+        .ef-modal-title { 
+            font-size: 1.6rem; 
+            color: var(--snow); 
+        } 
+        .ef-modal-close-btn { 
+            background: none; 
+            border: none; 
+            color: var(--text); 
+            font-size: 2rem; 
+            cursor: pointer; 
+            line-height: 1; 
+            opacity: 0.6; 
+            transition: opacity 0.2s; 
+        } 
+        .ef-modal-close-btn:hover { 
+            opacity: 1; 
+            color: var(--danger); 
+        } 
+        .ef-modal-body { 
+            padding: 24px; 
+            text-align: center; 
+        } 
+        .ef-modal-highlight { 
+            font-family: 'Baloo 2', sans-serif; 
+            font-size: 1.3rem; 
+            color: var(--warning); 
+            margin-bottom: 8px; 
+        } 
+        .ef-modal-text { 
+            font-size: 1.05rem; 
+            opacity: 0.9; 
+        } 
+        .ef-modal-footer { 
+            padding: 0 24px 24px 24px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+            align-items: center;
+        } 
+        
+        /* ========================================================================== 
+           RESPONSIVE DESIGN BREAKPOINTS 
+           ========================================================================== */ 
+        @media (max-width: 1200px) {
+            .ef-sidebar {
+                transform: translateX(-100%); 
+            }
+            .ef-sidebar.ef-sidebar-open {
+                transform: translateX(0);
+                box-shadow: 10px 0 30px rgba(0,0,0,0.4);
+            }
+            .ef-main-content, .ef-footer {
+                margin-left: 0; 
+            }
+        }
+
+        @media (max-width: 1024px) {
+    .ef-nav {
+        display: none;
+    }
+}
+            
+
+        @media (max-width: 850px) {
+            .ef-footer-bottom {
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                gap: 18px;
+            }
+            .ef-footer-platforms {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) { 
+            .ef-nav-container { 
+                flex-wrap: wrap; 
+            } 
+            .ef-search-container { 
+                order: 3; 
+                max-width: 100%; 
+                width: 100%; 
+                margin-top: 4px;
+            } 
+        }
+    
+        a {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        a:hover {
+            opacity: 1;
+            color: var(--primary-light);
+            text-decoration: underline;
+        }
+    
+        /* ========================================================================== 
+           UPGRADED DISCORD-STYLE SMOOTH ACCENT ANIMATION SWITCH 
+           ========================================================================== */
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Switch Track Frame */
+        .discord-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        /* Completely Hidden native Input checkbox */
+        .discord-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The Custom Rendered Slider Layer */
+        .discord-switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #4f545c; /* Discord Default Unchecked Gray */
+            transition: background-color 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+            border-radius: 14px;
+        }
+
+        /* The Round Sliding Handle Knob */
+        .discord-switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            /* Discord uses an energetic elastic snap curve for handle motion */
+            transition: transform 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55), width 0.15s ease, left 0.15s ease;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        /* Active click distortion logic (Squashes slightly when clicked like Discord) */
+        .discord-switch active + .slider:before {
+            width: 22px;
+        }
+
+        /* Checked State Target Style Rules */
+        .discord-switch input:checked + .slider {
+            background-color: #00d2ff; /* Your crisp winter blue accent */
+        }
+
+        /* Snap slide movement right action script */
+        .discord-switch input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* High Energy Accent Pulse Exploding outward */
+        .discord-switch input:checked + .slider::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 14px;
+            box-shadow: 0 0 0 6px rgba(0, 210, 255, 0);
+            animation: discord-pulse 0.35s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes discord-pulse {
+            0% { box-shadow: 0 0 0 0px rgba(0, 210, 255, 0.6); }
+            100% { box-shadow: 0 0 0 8px rgba(0, 210, 255, 0); }
+        }
+    
+    /* Hidden on desktop */
+.ef-mobile-nav {
+    display: none;
+}
+
+/* Only show inside the mobile drawer */
+@media (max-width: 1024px) {
+    li.ef-mobile-nav {
+        display: list-item;
+    }
+
+    hr.ef-mobile-nav {
+        display: block;
+    }
+}
+    
+    </style>
 </head>
-<body style="background: #5FA8FF; background: linear-gradient(180deg, rgba(95, 168, 255, 1) 0%, rgba(127, 200, 255, 1) 50%, rgba(184, 230, 255, 1) 100%);">
+<body class="ef-body">
 
-<code>Coming soon!</code>
-<br /><br /><br /><br /> <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><code>A wonderful platform will be made soon...</code><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <canvas id="snow-canvas"></canvas>
 
+    <header class="ef-header">
+        <div class="ef-nav-container">
+            <div class="ef-header-left">
+                <button class="ef-menu-toggle" id="menuToggleBtn" aria-label="Toggle Navigation Sidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="ef-logo">
+                    <img src="https://everfrostapp.github.io/assets/logos/Everfrost_main.png" alt="Everfrost Logo" class="ef-logo-img">
+                </div>
+            </div>
+            
+            <nav class="ef-nav">
+                <ul class="ef-nav-list">
+                    <li><a href="/games" class="ef-nav-link btn-preview-lock">Discover</a></li>
+                    <li><a href="/marketplace" class="ef-nav-link btn-preview-lock">Marketplace</a></li>
+                    <li><a href="/create" class="ef-nav-link btn-preview-lock">Create</a></li>
+                    <li><a href="/download" class="ef-nav-link">Download</a></li>
+                </ul>
+            </nav>
+
+            <div class="ef-search-container">
+                <div class="ef-search-input-wrapper">
+                    <span class="ef-search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" class="ef-search-input" id="efSearchInput" placeholder="Search games, creators...">
+                </div>
+                
+                <div class="ef-search-dropdown" id="efSearchDropdown">
+                    <div class="ef-dropdown-item">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <span class="ef-dropdown-query" id="queryGames"></span>
+                        <span class="ef-dropdown-target">in Games</span>
+                    </div>
+                    <div class="ef-dropdown-item">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="ef-dropdown-query" id="queryUsers"></span>
+                        <span class="ef-dropdown-target">in Users</span>
+                    </div>
+                    <div class="ef-dropdown-item">
+                        <i class="fa-solid fa-store"></i>
+                        <span class="ef-dropdown-query" id="queryMarketplace"></span>
+                        <span class="ef-dropdown-target">in Marketplace</span>
+                    </div>
+                    <div class="ef-dropdown-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="ef-dropdown-query" id="queryGroups"></span>
+                        <span class="ef-dropdown-target">in Groups</span>
+                    </div>
+                    <div class="ef-dropdown-item">
+                        <i class="fa-solid fa-hammer"></i>
+                        <span class="ef-dropdown-query" id="queryForge"></span>
+                        <span class="ef-dropdown-target">in Asset Forge</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ef-auth-actions">
+                <button class="ef-btn ef-btn-secondary">Login</button>
+                <button class="ef-btn ef-btn-primary">Sign Up</button>
+                <button class="ef-btn ef-btn-settings" id="navSettingsBtn" aria-label="Open Settings Preview"><i class="fa-solid fa-gear"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <aside class="ef-sidebar" id="appSidebar">
+        <ul class="ef-sidebar-menu">
+            <li class="ef-mobile-nav">
+    <a href="/games" class="ef-sidebar-link btn-preview-lock">
+        <i class="fa-solid fa-compass"></i> Discover
+    </a>
+</li>
+
+<li class="ef-mobile-nav">
+    <a href="/marketplace" class="ef-sidebar-link btn-preview-lock">
+        <i class="fa-solid fa-store"></i> Marketplace
+    </a>
+</li>
+
+<li class="ef-mobile-nav">
+    <a href="/create" class="ef-sidebar-link btn-preview-lock">
+        <i class="fa-solid fa-hammer"></i> Create
+    </a>
+</li>
+
+<li class="ef-mobile-nav">
+    <a href="/download" class="ef-sidebar-link">
+        <i class="fa-solid fa-circle-arrow-down"></i> Download
+    </a>
+</li>
+
+<hr class="ef-sidebar-divider ef-mobile-nav">
+
+            <li><a href="/" class="ef-sidebar-link ef-active"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a href="https://everfrost.onrender.com/profile" class="ef-sidebar-link btn-preview-lock"><i class="fa-solid fa-user"></i> Profile</a></li>
+            <li><a href="/messages" class="ef-sidebar-link btn-preview-lock"><i class="fa-solid fa-envelope"></i> Messages</a></li>
+            <li><a href="https://everfrost.onrender.com/friends" class="ef-sidebar-link btn-preview-lock"><i class="fa-solid fa-users"></i> Friends</a></li>
+            <li><a href="https://everfrost.onrender.com/avatar" class="ef-sidebar-link btn-preview-lock"><i class="fa-solid fa-shirt"></i> Avatar</a></li>
+            <hr class="ef-sidebar-divider">
+            <li><a href="#settings" class="ef-sidebar-link" id="sidebarSettingsBtn"><i class="fa-solid fa-gear"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="ef-main-content">
+        <div class="ef-content-container">
+            
+                        <div style="background-color: darkred; color: white;"><center><br />
+                <p>Hello! Welcome to Everfrost! This app is still in development but soon it will be an amazing experience to hang with friends and build a community. :)</p>
+                            <br /></center></div><br /><hr /><br />
+
+
+            <section class="ef-hero-greeting">
+                <h1 class="ef-hero-title">Welcome to <span>Everfrost</span></h1>
+                <p class="ef-hero-subtitle">Discover millions of immersive 3D experiences, create alongside a brilliant global community, and let your imagination run wild. Where creativity never melts.</p>
+            </section>
+
+            <section class="ef-section ef-hidden-section" id="recommendedSection">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon ef-icon-blue"><i class="fa-solid fa-sparkles"></i></span>Recommended For You</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-carousel-container">
+                    <div class="ef-carousel-track" id="recommendedTrack">
+                        </div>
+                </div>
+            </section>
+
+            <section class="ef-section">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon"><i class="fa-solid fa-earth-americas"></i></span>Trending Worldwide</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-carousel-container">
+                    <div class="ef-carousel-track" id="trendingWorldwideTrack">
+                        </div>
+                </div>
+            </section>
+
+            <section class="ef-section">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon ef-icon-orange"><i class="fa-solid fa-location-dot"></i></span>Trending in USA</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-carousel-container">
+                    <div class="ef-carousel-track" id="trendingLocalTrack">
+                        </div>
+                </div>
+            </section>
+
+            <section class="ef-section">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon ef-icon-purple"><i class="fa-solid fa-user-group"></i></span>Fun With Friends</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-carousel-container">
+                    <div class="ef-carousel-track" id="friendsTrack">
+                        </div>
+                </div>
+            </section>
+
+            <section class="ef-section">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon ef-icon-green"><i class="fa-solid fa-person-running"></i></span>Obbies</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-carousel-container">
+                    <div class="ef-carousel-track" id="obbiesTrack">
+                        </div>
+                </div>
+            </section>
+
+            <section class="ef-section">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon ef-icon-blue"><i class="fa-solid fa-masks-theater"></i></span>Roleplay Games</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-carousel-container">
+                    <div class="ef-carousel-track" id="roleplayTrack">
+                        </div>
+                </div>
+            </section>
+
+            <section class="ef-section">
+                <div class="ef-section-header">
+                    <h2 class="ef-section-title"><span class="ef-title-icon"><i class="fa-solid fa-crown"></i></span>Popular Creators</h2>
+                    <a href="#" class="ef-view-all btn-preview-lock">View All</a>
+                </div>
+                <div class="ef-grid ef-grid-creators">
+                    <div class="ef-card ef-creator-card ef-text-center">
+                        <div class="ef-creator-avatar-wrapper">
+                            <img src="https://everfrostapp.github.io/assets/logos/Everfrost_main.png" alt="Everfrost Studios Group Logo" class="ef-creator-avatar-img">
+                        </div>
+                        <div class="ef-card-body">
+                            <h3 class="ef-card-title">Everfrost Studios</h3>
+                            <p class="ef-creator-stats">4 Games</p>
+                        </div>
+                    </div>
+                    <div class="ef-card ef-creator-card ef-text-center">
+                        <div class="ef-creator-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150&auto=format&fit=crop&q=60" alt="CyberChill Group Logo" class="ef-creator-avatar-img">
+                        </div>
+                        <div class="ef-card-body">
+                            <h3 class="ef-card-title">CyberChill</h3>
+                            <p class="ef-creator-stats">12 Games</p>
+                        </div>
+                    </div>
+                    <div class="ef-card ef-creator-card ef-text-center">
+                        <div class="ef-creator-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=150&auto=format&fit=crop&q=60" alt="Flurry Labs Group Logo" class="ef-creator-avatar-img">
+                        </div>
+                        <div class="ef-card-body">
+                            <h3 class="ef-card-title">Flurry Labs</h3>
+                            <p class="ef-creator-stats">2 Games</p>
+                        </div>
+                    </div>
+                    <div class="ef-card ef-creator-card ef-text-center">
+                        <div class="ef-creator-avatar-wrapper">
+                            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=150&auto=format&fit=crop&q=60" alt="Apex Horizon Group Logo" class="ef-creator-avatar-img">
+                        </div>
+                        <div class="ef-card-body">
+                            <h3 class="ef-card-title">Apex Horizon</h3>
+                            <p class="ef-creator-stats">7 Games</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="ef-footer">
+        <div class="ef-footer-container">
+            <div class="ef-footer-preview-alert">
+                <p class="ef-footer-preview-text">You're currently previewing Everfrost.</p>
+                <p class="ef-footer-cta-text">Sign in to:</p>
+                <ul class="ef-footer-features-list">
+                    <li><span class="ef-feature-icon"><i class="fa-solid fa-gamepad"></i></span> Play games</li>
+                    <li><span class="ef-feature-icon"><i class="fa-solid fa-comments"></i></span> Chat with friends</li>
+                    <li><span class="ef-feature-icon"><i class="fa-solid fa-user-gear"></i></span> Customize your avatar</li>
+                    <li><span class="ef-feature-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span> Publish creations</li>
+                </ul>
+                <div class="ef-footer-actions">
+                    <button class="ef-btn ef-btn-secondary">Login</button>
+                    <button class="ef-btn ef-btn-primary">Create Account</button>
+                    <div class="guest-login-container" style="text-align: center; width: 100%; margin-top: 15px;">
+                        <a href="home.html" class="guestLoginBtn ef-footer-legal-link">Login as a guest</a>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="ef-footer-legal-nav">
+                <li><a href="#" class="ef-footer-legal-link">About Us</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Jobs</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Blog</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Parents</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Gift Cards</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Support</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Terms of Service</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Privacy Policy</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Community Rules</a></li>
+                <li><a href="#" class="ef-footer-legal-link">Safety &amp; Moderation</a></li>
+            </ul>
+
+            <div class="ef-footer-corporate-info">
+                © 2026 Everfrost Corporation. Everfrost, the Everfrost logo, and Where Creativity Never Melts are among our registered and unregistered trademarks in the U.S. and other countries. Replicating interface components or assets without structural written platform consent is strictly prohibited.
+            </div>
+
+            <hr class="ef-footer-divider">
+
+            <div class="ef-footer-bottom">
+                <div class="ef-footer-platforms">
+                    <span class="ef-platform-label">Platform availability:</span>
+                    <ul class="ef-platform-list">
+                        <li class="ef-platform-item"><i class="fa-brands fa-windows"></i> Windows</li>
+                        <li class="ef-platform-item"><i class="fa-brands fa-apple"></i> macOS</li>
+                        <li class="ef-platform-item"><i class="fa-solid fa-mobile-screen-button"></i> iOS</li>
+                        <li class="ef-platform-item"><i class="fa-brands fa-android"></i> Android</li>
+                    </ul>
+                </div>
+                <div class="ef-footer-slogan">Where Creativity Never Melts. <i class="fa-regular fa-snowflake"></i></div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="ef-modal-backdrop" id="previewModal">
+        <div class="ef-modal">
+            <div class="ef-modal-header">
+                <h3 class="ef-modal-title">Everfrost Feature</h3>
+                <button class="ef-modal-close-btn" id="modalCloseBtn">×</button>
+            </div>
+            <div class="ef-modal-body">
+                <p class="ef-modal-highlight">You're currently previewing Everfrost.</p>
+                <p class="ef-modal-text">To play games, view profiles, message friends, and customize characters, you'll need to create an account.</p>
+            </div>
+            <div class="ef-modal-footer">
+                <button class="ef-btn ef-btn-primary">Create Account</button>
+                <button class="ef-btn ef-btn-secondary">Login</button>
+                <div class="guest-login-container" style="text-align: center; margin-top: 15px;">
+                    <a href="home.html" class="guestLoginBtn ef-footer-legal-link">Login as a guest</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ef-modal-backdrop" id="settingsModal">
+        <div class="ef-modal">
+            <div class="ef-modal-header">
+                <h3 class="ef-modal-title"><i class="fa-solid fa-gear"></i> Platform Settings</h3>
+                <button class="ef-modal-close-btn" id="settingsCloseBtn">×</button>
+            </div>
+            <div class="ef-modal-body">
+                <p class="ef-modal-highlight">Site Options</p>
+                
+                <div class="ef-settings-row">
+                    <span class="ef-switch-label">Background Snowfall</span>
+                    <div class="setting-item">
+                        <label class="discord-switch">
+                            <input type="checkbox" id="winterEffectsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <p class="ef-preview-notice">
+                    <i class="fa-solid fa-circle-info"></i> &nbsp;Note: This is a preview of the settings. In the live app, these settings will be located in the exact same area, but not inside a popup like this one.
+                </p>
+            </div>
+            <div class="ef-modal-footer">
+                <button class="ef-btn ef-btn-primary" id="settingsSaveBtn">Close Options</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. DATA REPOSITORY: 25+ Complete Fictional/Real Alternative Games Matrix
+        const PLATFORM_GAMES_DATABASE = [
+            { id: 1, title: "Paddle Smash 99", dev: "Volley Labs", rating: "96%", active: "104.5k", thumb: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80", category: "worldwide" },
+            { id: 2, title: "Void Runner", dev: "Glitchware Games", rating: "92%", active: "78.1k", thumb: "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?w=400&q=80", category: "worldwide" },
+            { id: 3, title: "Error 404", dev: "Null Pointer Team", rating: "89%", active: "43.2k", thumb: "https://images.unsplash.com/photo-1548777123-e216912df7d8?w=400&q=80", category: "worldwide" },
+            { id: 4, title: "Neon Hookshot", dev: "CyberChill", rating: "95%", active: "39.8k", thumb: "https://images.unsplash.com/photo-1506710507565-203b9f24669b?w=400&q=80", category: "worldwide" },
+            { id: 5, title: "Quantum Drift", dev: "Vivid Nitro Labs", rating: "94%", active: "14.2k", thumb: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=400&q=80", category: "worldwide" },
+            { id: 6, title: "Retro Bowl", dev: "New Star Games", rating: "97%", active: "55.4k", thumb: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=400&q=80", category: "local" },
+            { id: 7, title: "Hyper Drive Football", dev: "Apex Horizon", rating: "90%", active: "22.1k", thumb: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=400&q=80", category: "local" },
+            { id: 8, title: "Drive Mad", dev: "Fancade Labs", rating: "93%", active: "19.5k", thumb: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=400&q=80", category: "local" },
+            { id: 9, title: "Pixel Puncher", dev: "8Bit Retro Crew", rating: "86%", active: "11.2k", thumb: "https://images.unsplash.com/photo-1517495306984-f84210f9daa8?w=400&q=80", category: "local" },
+            { id: 10, title: "Tunnel Rush 2", dev: "Deer Cat Games", rating: "91%", active: "64.0k", thumb: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=400&q=80", category: "local" },
+            { id: 11, title: "Smash Karts", dev: "Ape Apps", rating: "94%", active: "62.3k", thumb: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=80", category: "friends" },
+            { id: 12, title: "1v1.LOL", dev: "JustPlay.LOL", rating: "91%", active: "88.7k", thumb: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80", category: "friends" },
+            { id: 13, title: "Shell Shockers", dev: "Blue Wizard Digital", rating: "90%", active: "41.5k", thumb: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=400&q=80", category: "friends" },
+            { id: 14, title: "Rooftop Snipers", dev: "Michael Eidson", rating: "87%", active: "14.8k", thumb: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&q=80", category: "friends" },
+            { id: 15, title: "Chroma Dash", dev: "Spectrum Interactive", rating: "88%", active: "5.1k", thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80", category: "friends" },
+            { id: 16, title: "Neon Tower Ascent", dev: "Parkour Bros", rating: "88%", active: "27.4k", thumb: "https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?w=400&q=80", category: "obbies" },
+            { id: 17, title: "The Glitch Obby", dev: "Error Studio", rating: "84%", active: "18.2k", thumb: "https://images.unsplash.com/photo-1548777123-e216912df7d8?w=400&q=80", category: "obbies" },
+            { id: 18, title: "Lava Run 3D", dev: "Magma Build Team", rating: "91%", active: "31.0k", thumb: "https://images.unsplash.com/photo-1506710507565-203b9f24669b?w=400&q=80", category: "obbies" },
+            { id: 19, title: "Speed Run: Synthwave", dev: "Vector Forge", rating: "93%", active: "24.6k", thumb: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?w=400&q=80", category: "obbies" },
+            { id: 20, title: "Vector Siege", dev: "LineDot Dev", rating: "85%", active: "3.4k", thumb: "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=400&q=80", category: "obbies" },
+            { id: 21, title: "Pixel City Life", dev: "Metro Simulators", rating: "89%", active: "45.6k", thumb: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&q=80", category: "roleplay" },
+            { id: 22, title: "Neon High RP", dev: "Everfrost Academy", rating: "82%", active: "21.3k", thumb: "https://images.unsplash.com/photo-1517495306984-f84210f9daa8?w=400&q=80", category: "roleplay" },
+            { id: 23, title: "Cyber-Nation Sim", dev: "HoloMatrix", rating: "86%", active: "15.9k", thumb: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&q=80", category: "roleplay" },
+            { id: 24, title: "Retro Arcade Tycoon", dev: "Flurry Labs", rating: "92%", active: "33.4k", thumb: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&q=80", category: "roleplay" },
+            { id: 25, title: "Cozy Cafe Roleplay", dev: "Boba Bliss", rating: "95%", active: "41.0k", thumb: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&q=80", category: "roleplay" }
+        ];
+
+        // 2. GENERATE CARDS SYSTEMATICIALLY
+        function createGameCardHTML(game) {
+            return `
+                <div class="ef-card">
+                    <div class="ef-card-thumbnail-wrapper">
+                        <img src="${game.thumb}" alt="${game.title}" class="ef-card-img">
+                        <div class="ef-hover-play-overlay">
+                            <button class="ef-hover-play-btn btn-preview-lock"><i class="fa-solid fa-play"></i></button>
+                        </div>
+                    </div>
+                    <div class="ef-card-body">
+                        <h3 class="ef-card-title">${game.title}</h3>
+                        <p class="ef-card-developer">${game.dev}</p>
+                        <div class="ef-card-metrics">
+                            <div class="ef-metric-item ef-rating">
+                                <i class="fa-solid fa-thumbs-up"></i> ${game.rating}
+                            </div>
+                            <div class="ef-metric-item ef-active-players">
+                                <i class="fa-solid fa-user"></i> ${game.active}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 3. RENDER ALL TRACKS
+        function renderPlatformData() {
+            const tracks = {
+                worldwide: document.getElementById('trendingWorldwideTrack'),
+                local: document.getElementById('trendingLocalTrack'),
+                friends: document.getElementById('friendsTrack'),
+                obbies: document.getElementById('obbiesTrack'),
+                roleplay: document.getElementById('roleplayTrack')
+            };
+
+            Object.values(tracks).forEach(track => { if(track) track.innerHTML = ''; });
+
+            PLATFORM_GAMES_DATABASE.forEach(game => {
+                const track = tracks[game.category];
+                if (track) {
+                    track.innerHTML += createGameCardHTML(game);
+                }
+            });
+        }
+
+        // Initialize core layout render loops
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPlatformData();
+
+// Re-bind modal events to dynamically generated elements
+document.body.addEventListener('click', (e) => {
+    // 1. Check if they clicked a standard lock button or anywhere on a game card
+    const clickedCard = e.target.closest('.ef-card');
+    const clickedLockBtn = e.target.closest('.btn-preview-lock');
+
+    if (clickedCard || clickedLockBtn) {
+        e.preventDefault();
+        
+        // FUTURE BACKEND/FRONTEND ROUTING:
+        // When you're ready to add real page links, we will check if the user is logged in.
+        // If logged in:
+        //    const gameId = clickedCard.dataset.id;
+        //    window.location.href = `https://everfrostapp.github.io/games/?id=${gameId}`;
+        // If not logged in (Current Preview State):
+        
+        document.getElementById('previewModal').classList.add('ef-modal-active');
+    }
+});
+
+
+            const sidebar = document.getElementById('appSidebar');
+            const toggleBtn = document.getElementById('menuToggleBtn');
+            const modal = document.getElementById('previewModal');
+            const closeBtn = document.getElementById('modalCloseBtn');
+
+            // Settings Modal Elements
+            const settingsModal = document.getElementById('settingsModal');
+            const navSettingsBtn = document.getElementById('navSettingsBtn');
+            const sidebarSettingsBtn = document.getElementById('sidebarSettingsBtn');
+            const settingsCloseBtn = document.getElementById('settingsCloseBtn');
+            const settingsSaveBtn = document.getElementById('settingsSaveBtn');
+            const winterEffectsToggle = document.getElementById('winterEffectsToggle'); // FIX: Matches Toggle ID
+
+            // Search Dropdown Elements
+            const searchInput = document.getElementById('efSearchInput');
+            const searchDropdown = document.getElementById('efSearchDropdown');
+            const queryIds = ['queryGames', 'queryUsers', 'queryMarketplace', 'queryGroups', 'queryForge'];
+
+            // 1. Sidebar Toggle Mechanics
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.toggle('ef-sidebar-open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    sidebar.classList.remove('ef-sidebar-open');
+                }
+            });
+
+            // 2. Dynamic Search Input Dropdown Logic
+            searchInput.addEventListener('input', () => {
+                const val = searchInput.value;
+                if (val.length > 0) {
+                    queryIds.forEach(id => {
+                        document.getElementById(id).textContent = `"${val}"`;
+                    });
+                    searchDropdown.style.display = 'flex';
+                } else {
+                    searchDropdown.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                    searchDropdown.style.display = 'none';
+                }
+            });
+
+            searchDropdown.querySelectorAll('.ef-dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchDropdown.style.display = 'none';
+                    modal.classList.add('ef-modal-active');
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('ef-modal-active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('ef-modal-active');
+                }
+            });
+
+            // 4. Settings Popup Engine Hook
+            const openSettings = (e) => {
+                e.preventDefault();
+                settingsModal.classList.add('ef-modal-active');
+            };
+
+            navSettingsBtn.addEventListener('click', openSettings);
+            sidebarSettingsBtn.addEventListener('click', openSettings);
+
+            const closeSettings = () => settingsModal.classList.remove('ef-modal-active');
+            settingsCloseBtn.addEventListener('click', closeSettings);
+            settingsSaveBtn.addEventListener('click', closeSettings);
+
+            settingsModal.addEventListener('click', (e) => {
+                if (e.target === settingsModal) closeSettings();
+            });
+
+            // ========================================================================== 
+            // 5. LIGHTWEIGHT JAVASCRIPT SNOWFALL SYSTEMS UTILITY
+            // ==========================================================================
+            const canvas = document.getElementById('snow-canvas');
+            const ctx = canvas.getContext('2d');
+            let animationFrameId;
+            let snowflakes = [];
+            let snowActive = true;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Snowflake {
+                constructor() {
+                    this.reset();
+                    this.y = Math.random() * canvas.height; 
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = -10;
+                    this.radius = Math.random() * 2.5 + 0.5;
+                    this.density = Math.random() * 0.8 + 0.3;
+                    this.opacity = Math.random() * 0.5 + 0.3;
+                }
+                update() {
+                    this.y += this.density;
+                    this.x += Math.sin(this.y / 30) * 0.3;
+                    if (this.y > canvas.height) {
+                        this.reset();
+                    }
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(244, 248, 252, ${this.opacity})`; 
+                    ctx.fill();
+                }
+            }
+
+            function initSnow() {
+                snowflakes = [];
+                for (let i = 0; i < 65; i++) {
+                    snowflakes.push(new Snowflake());
+                }
+            }
+
+            function animateSnow() {
+                if (!snowActive) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                snowflakes.forEach(flake => {
+                    flake.update();
+                    flake.draw();
+                });
+                animationFrameId = requestAnimationFrame(animateSnow);
+            }
+
+            function toggleSnowfall(isEnabled) {
+                if (isEnabled) {
+                    snowActive = true;
+                    canvas.style.display = 'block';
+                    initSnow();
+                    animateSnow();
+                } else {
+                    snowActive = false;
+                    canvas.style.display = 'none';
+                    cancelAnimationFrame(animationFrameId);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+
+            // FIX: Uses correct element target variable binding
+            winterEffectsToggle.addEventListener('change', (e) => {
+                toggleSnowfall(e.target.checked);
+            });
+
+            initSnow();
+            animateSnow();
+
+            // Guest login link matrix configuration array setup
+            document.querySelectorAll('.guestLoginBtn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    localStorage.setItem('userRole', 'guest');
+                    localStorage.setItem('isLoggedIn', 'true');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
