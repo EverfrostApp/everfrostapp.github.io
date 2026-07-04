@@ -943,10 +943,10 @@
         }
 
         @media (max-width: 1024px) {
-    .ef-nav {
-        display: none;
-    }
-}
+            .ef-nav {
+                display: none;
+            }
+        }
             
 
         @media (max-width: 850px) {
@@ -1065,30 +1065,55 @@
             100% { box-shadow: 0 0 0 8px rgba(0, 210, 255, 0); }
         }
     
-    /* Hidden on desktop */
-.ef-mobile-nav {
-    display: none;
-}
+        /* Hidden on desktop */
+        .ef-mobile-nav {
+            display: none;
+        }
 
-/* Only show inside the mobile drawer */
-@media (max-width: 1024px) {
-    li.ef-mobile-nav {
-        display: list-item;
-    }
+        /* Only show inside the mobile drawer */
+        @media (max-width: 1024px) {
+            li.ef-mobile-nav {
+                display: list-item;
+            }
 
-    hr.ef-mobile-nav {
-        display: block;
-    }
-}
-    
+            hr.ef-mobile-nav {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body class="ef-body">
 
     <canvas id="snow-canvas"></canvas>
     
-    <div class="settingsModal" id="settingsModal"></div>
+    <!-- Settings Preview Modal (Constructed properly via innerHTML matching template hooks) -->
+    <div class="ef-modal-backdrop" id="settingsModal">
+        <div class="ef-modal">
+            <div class="ef-modal-header">
+                <h3 class="ef-modal-title">Settings Preview</h3>
+                <button class="ef-modal-close-btn" id="settingsCloseBtn">&times;</button>
+            </div>
+            <div class="ef-modal-body">
+                <h4 class="ef-modal-highlight">Tundra Customization</h4>
+                <p class="ef-modal-text">Personalize your Everfrost ecosystem portal visuals instantly.</p>
+                <div class="ef-settings-row">
+                    <span class="ef-switch-label"><i class="fa-regular fa-snowflake"></i> Ambient Snow Particles</span>
+                    <div class="setting-item">
+                        <label class="discord-switch">
+                            <input type="checkbox" id="winterEffectsToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <p class="ef-preview-notice">Note: Setting states toggled here are visual runtime simulations optimized for live web layout engine demonstrations.</p>
+            </div>
+            <div class="ef-modal-footer">
+                <button class="ef-btn ef-btn-primary ef-btn-full" id="settingsSaveBtn">Apply Configurations</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Main Platform Header Layer -->
     <header class="ef-header">
         <div class="ef-nav-container">
             <div class="ef-header-left">
@@ -1152,33 +1177,30 @@
         </div>
     </header>
 
+    <!-- Sidebar Menu Portal -->
     <aside class="ef-sidebar" id="appSidebar">
         <ul class="ef-sidebar-menu">
             <li class="ef-mobile-nav">
-    <a href="/games" class="ef-sidebar-link btn-preview-lock">
-        <i class="fa-solid fa-compass"></i> Discover
-    </a>
-</li>
-
-<li class="ef-mobile-nav">
-    <a href="/marketplace" class="ef-sidebar-link btn-preview-lock">
-        <i class="fa-solid fa-store"></i> Marketplace
-    </a>
-</li>
-
-<li class="ef-mobile-nav">
-    <a href="/create" class="ef-sidebar-link btn-preview-lock">
-        <i class="fa-solid fa-hammer"></i> Create
-    </a>
-</li>
-
-<li class="ef-mobile-nav">
-    <a href="/download" class="ef-sidebar-link">
-        <i class="fa-solid fa-circle-arrow-down"></i> Download
-    </a>
-</li>
-
-<hr class="ef-sidebar-divider ef-mobile-nav">
+                <a href="/games" class="ef-sidebar-link btn-preview-lock">
+                    <i class="fa-solid fa-compass"></i> Discover
+                </a>
+            </li>
+            <li class="ef-mobile-nav">
+                <a href="/marketplace" class="ef-sidebar-link btn-preview-lock">
+                    <i class="fa-solid fa-store"></i> Marketplace
+                </a>
+            </li>
+            <li class="ef-mobile-nav">
+                <a href="/create" class="ef-sidebar-link btn-preview-lock">
+                    <i class="fa-solid fa-hammer"></i> Create
+                </a>
+            </li>
+            <li class="ef-mobile-nav">
+                <a href="/download" class="ef-sidebar-link">
+                    <i class="fa-solid fa-circle-arrow-down"></i> Download
+                </a>
+            </li>
+            <hr class="ef-sidebar-divider ef-mobile-nav">
 
             <li><a href="/" class="ef-sidebar-link"><i class="fa-solid fa-house"></i> Home</a></li>
             <li><a href="https://everfrost.onrender.com/profile" class="ef-sidebar-link btn-preview-lock"><i class="fa-solid fa-user"></i> Profile</a></li>
@@ -1190,73 +1212,73 @@
         </ul>
     </aside>
 
+    <!-- Main Dynamic Frame -->
     <main class="ef-main-content">
         <div class="ef-content-container">
         		
-   <div class="ef-login-wrapper" style="display: flex; justify-content: center; align-items: center; min-height: 70vh; padding: 20px 0;">
-    <div class="ef-login-card" style="background-color: var(--surface); border: 3px solid var(--surface-light); border-radius: var(--radius-lg); width: 100%; max-width: 440px; padding: 40px 32px; box-shadow: 0 10px 30px var(--purple-glow); text-align: center;">
-        
-        <h2 class="ef-login-title" style="font-size: 2.2rem; color: var(--snow); margin-bottom: 8px;">Log In to Everfrost</h2>
-        <p class="ef-login-subtitle" style="font-size: 0.95rem; color: var(--text); opacity: 0.7; margin-bottom: 32px;">Where Creativity Never Melts</p>
-        
-        <form id="efLoginForm" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
-            
-                    <div id="efAuthAlert" style="display: none;"></div>
-            
-            <!-- Dual-Purpose Input Field (Username or Email) -->
-            <div class="ef-input-group" style="display: flex; flex-direction: column; gap: 8px;">
-                <label for="loginUser" style="font-size: 0.9rem; font-weight: 500; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 0.5px;">Username or Email</label>
-                <div style="position: relative;">
-                    <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--primary-light); opacity: 0.7;"><i class="fa-solid fa-user"></i></span>
-                    <input type="text" id="loginUser" required placeholder="Enter Username or Email..." style="width: 100%; background-color: var(--background); border: 2px solid var(--surface-light); border-radius: var(--radius-md); padding: 12px 16px 12px 44px; color: var(--snow); font-family: inherit; font-size: 1rem; transition: all 0.2s;" onfocus="this.style.borderColor='var(--primary)';" onblur="this.style.borderColor='var(--surface-light)';">
+            <div class="ef-login-wrapper" style="display: flex; justify-content: center; align-items: center; min-height: 70vh; padding: 20px 0;">
+                <div class="ef-login-card" style="background-color: var(--surface); border: 3px solid var(--surface-light); border-radius: var(--radius-lg); width: 100%; max-width: 440px; padding: 40px 32px; box-shadow: 0 10px 30px var(--purple-glow); text-align: center;">
+                    
+                    <h2 class="ef-login-title" style="font-size: 2.2rem; color: var(--snow); margin-bottom: 8px;">Log In to Everfrost</h2>
+                    <p class="ef-login-subtitle" style="font-size: 0.95rem; color: var(--text); opacity: 0.7; margin-bottom: 32px;">Where Creativity Never Melts</p>
+                    
+                    <form id="efLoginForm" onsubmit="event.preventDefault();" style="display: flex; flex-direction: column; gap: 20px; text-align: left;">
+                        
+                        <div id="efAuthAlert" style="display: none;"></div>
+                        
+                        <!-- Username/Email Field -->
+                        <div class="ef-input-group" style="display: flex; flex-direction: column; gap: 8px;">
+                            <label for="loginUser" style="font-size: 0.9rem; font-weight: 500; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 0.5px;">Username or Email</label>
+                            <div style="position: relative;">
+                                <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--primary-light); opacity: 0.7;"><i class="fa-solid fa-user"></i></span>
+                                <input type="text" id="loginUser" required placeholder="Enter Username or Email..." style="width: 100%; background-color: var(--background); border: 2px solid var(--surface-light); border-radius: var(--radius-md); padding: 12px 16px 12px 44px; color: var(--snow); font-family: inherit; font-size: 1rem; transition: all 0.2s;" onfocus="this.style.borderColor='var(--primary)';" onblur="this.style.borderColor='var(--surface-light)';">
+                            </div>
+                        </div>
+
+                        <!-- Password Field with View Toggle Anchor Hook -->
+                        <div class="ef-input-group" style="display: flex; flex-direction: column; gap: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <label for="loginPassword" style="font-size: 0.9rem; font-weight: 500; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 0.5px;">Password</label>
+                                <a href="/forgot" style="font-size: 0.85rem; color: var(--primary-light); opacity: 0.8;">Forgot?</a>
+                            </div>
+                            <div style="position: relative;">
+                                <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--primary-light); opacity: 0.7;"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" id="loginPassword" required placeholder="Enter password..." style="width: 100%; background-color: var(--background); border: 2px solid var(--surface-light); border-radius: var(--radius-md); padding: 12px 16px 12px 44px; color: var(--snow); font-family: inherit; font-size: 1rem; transition: all 0.2s; padding-right: 44px;" onfocus="this.style.borderColor='var(--primary)';" onblur="this.style.borderColor='var(--surface-light)';">
+                                <button type="button" class="toggle-password" data-target="loginPassword" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--primary-light); opacity: 0.6; cursor: pointer; font-size: 1rem;"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="ef-btn ef-btn-primary ef-btn-full" style="margin-top: 10px; padding: 14px; font-size: 1.1rem;">
+                            Log In <i class="fa-solid fa-right-to-bracket"></i>
+                        </button>
+                        
+                    </form>
+
+                    <div style="display: flex; align-items: center; margin: 24px 0; opacity: 0.2;">
+                        <hr style="flex: 1; border: 0; height: 2px; background-color: var(--text);">
+                        <span style="padding: 0 12px; font-size: 0.85rem; color: var(--text); font-weight: 700;">OR</span>
+                        <hr style="flex: 1; border: 0; height: 2px; background-color: var(--text);">
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <button class="ef-btn ef-btn-secondary ef-btn-full guestLoginBtn" style="padding: 12px;">
+                            <i class="fa-solid fa-user-secret"></i> Continue as Guest
+                        </button>
+                    </div>
+
+                    <p style="margin-top: 32px; font-size: 0.95rem; color: var(--text); opacity: 0.6;">
+                        New to the tundra? <a href="/signup" style="color: var(--cyan-accent); font-weight: 700; opacity: 1;">Create an account</a>
+                    </p>
+
                 </div>
             </div>
-
-            <div class="ef-input-group" style="display: flex; flex-direction: column; gap: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <label for="loginPassword" style="font-size: 0.9rem; font-weight: 500; color: var(--cyan-accent); text-transform: uppercase; letter-spacing: 0.5px;">Password</label>
-                    <a href="/forgot" style="font-size: 0.85rem; color: var(--primary-light); opacity: 0.8;">Forgot?</a>
-                </div>
-                <div style="position: relative;">
-                    <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--primary-light); opacity: 0.7;"><i class="fa-solid fa-lock"></i></span>
-                    <input type="password" id="loginPassword" required placeholder="Enter password..." style="width: 100%; background-color: var(--background); border: 2px solid var(--surface-light); border-radius: var(--radius-md); padding: 12px 16px 12px 44px; color: var(--snow); font-family: inherit; font-size: 1rem; transition: all 0.2s;" onfocus="this.style.borderColor='var(--primary)';" onblur="this.style.borderColor='var(--surface-light)';">
-                </div>
-            </div>
-
-            <button type="submit" class="ef-btn ef-btn-primary ef-btn-full" style="margin-top: 10px; padding: 14px; font-size: 1.1rem;">
-                Log In <i class="fa-solid fa-right-to-bracket"></i>
-            </button>
-            
-        </form>
-
-        <div style="display: flex; align-items: center; margin: 24px 0; opacity: 0.2;">
-            <hr style="flex: 1; border: 0; height: 2px; background-color: var(--text);">
-            <span style="padding: 0 12px; font-size: 0.85rem; color: var(--text); font-weight: 700;">OR</span>
-            <hr style="flex: 1; border: 0; height: 2px; background-color: var(--text);">
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <button class="ef-btn ef-btn-secondary ef-btn-full guestLoginBtn" style="padding: 12px;">
-                <i class="fa-solid fa-user-secret"></i> Continue as Guest
-            </button>
-        </div>
-
-        <p style="margin-top: 32px; font-size: 0.95rem; color: var(--text); opacity: 0.6;">
-            New to the tundra? <a href="/signup" style="color: var(--cyan-accent); font-weight: 700; opacity: 1;">Create an account</a>
-        </p>
-
-    </div>
-</div>
-
-  
 
         </div>
     </main>
 
+    <!-- Platform Footer -->
     <footer class="ef-footer">
         <div class="ef-footer-container">
-            
-
             <ul class="ef-footer-legal-nav">
                 <li><a href="#" class="ef-footer-legal-link">About Us</a></li>
                 <li><a href="#" class="ef-footer-legal-link">Jobs</a></li>
@@ -1356,11 +1378,7 @@
         // --- 🛠️ SIDEBAR & SETTINGS NAVIGATION INTERACTIVITY FIXED ---
         const sidebar = document.getElementById('appSidebar');
         const toggleBtn = document.getElementById('menuToggleBtn');
-        const settingsModal = document.getElementById('settingsModal') || document.querySelector('.ef-settings-modal');
-        const navSettingsBtn = document.getElementById('navSettingsBtn');
-        const sidebarSettingsBtn = document.getElementById('sidebarSettingsBtn');
-        const settingsCloseBtn = document.getElementById('settingsCloseBtn');
-        const settingsSaveBtn = document.getElementById('settingsSaveBtn');
+        const settingsModal = document.getElementById('settingsModal');
         const winterEffectsToggle = document.getElementById('winterEffectsToggle');
 
         if (toggleBtn && sidebar) {
@@ -1375,16 +1393,14 @@
             });
         }
 
-        // --- 🛠️ BULLETPROOF SETTINGS MODAL INTERACTIVITY ---
-                
-        // Target buttons by ID or by common semantic classes
+        // --- 🛠️ SETTINGS MODAL INTERACTIVITY BINDINGS ---
         const settingsButtons = [
             document.getElementById('navSettingsBtn'),
             document.getElementById('sidebarSettingsBtn'),
             document.querySelector('.nav-settings-btn'),
             document.querySelector('.sidebar-settings-btn'),
             document.querySelector('[data-target="settings"]')
-        ].filter(btn => btn !== null); // Clean out empty matches
+        ].filter(btn => btn !== null);
 
         const closeButtons = [
             document.getElementById('settingsCloseBtn'),
@@ -1393,7 +1409,6 @@
             document.querySelector('.settings-save-btn')
         ].filter(btn => btn !== null);
 
-        // Bind Open Click Actions
         if (settingsButtons.length > 0 && settingsModal) {
             settingsButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -1403,17 +1418,48 @@
                     console.log("❄️ Everfrost UI: Settings Modal Activated via", btn);
                 });
             });
-        } else {
-            console.warn("⚠️ Everfrost UI Linkage: Settings buttons or modal target container not found in current DOM layout.");
         }
 
-        // Bind Close Click Actions
         if (closeButtons.length > 0 && settingsModal) {
             closeButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     settingsModal.classList.remove('ef-modal-active');
                 });
+            });
+        }
+
+        // --- 🔍 LIVE PLATFORM SEARCH INTERACTIVITY ---
+        const searchInput = document.getElementById('efSearchInput');
+        const searchDropdown = document.getElementById('efSearchDropdown');
+        
+        const queries = {
+            games: document.getElementById('queryGames'),
+            users: document.getElementById('queryUsers'),
+            marketplace: document.getElementById('queryMarketplace'),
+            groups: document.getElementById('queryGroups'),
+            forge: document.getElementById('queryForge')
+        };
+
+        if (searchInput && searchDropdown) {
+            searchInput.addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                if (val.length > 0) {
+                    searchDropdown.style.display = 'flex';
+                    if (queries.games) queries.games.textContent = `"${val}"`;
+                    if (queries.users) queries.users.textContent = `"${val}"`;
+                    if (queries.marketplace) queries.marketplace.textContent = `"${val}"`;
+                    if (queries.groups) queries.groups.textContent = `"${val}"`;
+                    if (queries.forge) queries.forge.textContent = `"${val}"`;
+                } else {
+                    searchDropdown.style.display = 'none';
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                    searchDropdown.style.display = 'none';
+                }
             });
         }
 
@@ -1434,6 +1480,27 @@
                         icon.className = 'fas fa-eye';
                     }
                 }
+            });
+        });
+
+        // --- ❄ Rose Glow Lock / Lock Alert Hook System ---
+        const lockTriggers = document.querySelectorAll('.btn-preview-lock');
+        lockTriggers.forEach(element => {
+            element.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAlert('error', `<i class="fa-solid fa-lock"></i> This area requires authentication. Please log in or create an account to access the platform networks.`);
+            });
+        });
+
+        // --- 🕶️ CONTINUE AS GUEST CONTEXT SCRIPT ---
+        const guestBtns = document.querySelectorAll('.guestLoginBtn');
+        guestBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                showAlert('success', `<i class="fa-solid fa-user-secret"></i> Initializing Guest Environment Session...`);
+                setTimeout(() => {
+                    window.location.href = "/games";
+                }, 1200);
             });
         });
 
@@ -1513,11 +1580,7 @@
         async function checkActiveSession() {
             const { data: { session } } = await frostBase.auth.getSession();
             if (session) {
-                // 💡 FUTURE BAN CHECK SYSTEM WILL PLUG IN RIGHT HERE:
-                // const isBanned = await checkBanStatus(session.user.id);
-                // if (isBanned) { window.location.href = "/bancheck"; return; }
-                
-                window.location.href = "/home";
+      //          window.location.href = "/home";
             }
         }
         checkActiveSession();
@@ -1629,7 +1692,5 @@
         }
     });
 </script>
-
-    
 </body>
 </html>
